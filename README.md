@@ -32,8 +32,10 @@ nix build .#installer --override-input nixos-neo path:/path/to/nixos-neo
 ## Installation and first login
 
 Extract the archive on a supported MacBook Neo and run `nixos-neo/Install.command`.
-Use `check` for the native runtime/bundle preflight, then the fresh-install or
-existing-stub workflow documented by `nixos-neo`.
+Its menu can discover existing installations, present compatible named targets,
+create private run directories and resume saved plans. Use the guided fresh-space
+or replacement workflow; explicit `check`, `plan` and `reinstall` commands remain
+available for automation. The support repository documents the full workflow.
 
 First boot asks for the `neo` account's password on the local console, then starts
 the standard KDE login screen. The shared first-login module temporarily mutes
