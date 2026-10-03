@@ -1,0 +1,137 @@
+{
+  "nodes": {
+    "aurora-installer": {
+      "flake": false,
+      "locked": {
+        "path": "./vendor/aurora-installer",
+        "type": "path"
+      },
+      "original": {
+        "path": "./vendor/aurora-installer",
+        "type": "path"
+      },
+      "parent": [
+        "nixos-neo"
+      ]
+    },
+    "aurora-linux": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790508905,
+        "narHash": "sha256-0cSRgTn3cwpLmDmzqKfo+eNV2ixN6K90Ow5zj1BmrKg=",
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "b8404c7034c3af24fba4fa89273c1405b4947d47",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "b8404c7034c3af24fba4fa89273c1405b4947d47",
+        "type": "github"
+      }
+    },
+    "aurora-linux-wifi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790918666,
+        "narHash": "sha256-w5rgehwuoaeG6F5ZpmVhePIm/Vc/g6g4JmLmv7p55D0=",
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "3bb0a6104a11c1e6a2836af07759db0986ac5f85",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "3bb0a6104a11c1e6a2836af07759db0986ac5f85",
+        "type": "github"
+      }
+    },
+    "aurora-m1n1": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790666919,
+        "narHash": "sha256-XdfiWZuJJW1yWzY/8zu4BNhcm5HnkHxb0/ztgFghdtU=",
+        "owner": "aurora-silicon",
+        "repo": "m1n1",
+        "rev": "0a33275c3c95a9ba18eca085c59951af9fedfcc7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "m1n1",
+        "rev": "0a33275c3c95a9ba18eca085c59951af9fedfcc7",
+        "type": "github"
+      }
+    },
+    "aurora-uboot": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790768117,
+        "narHash": "sha256-Zz2DNzksMROe8FS1mvlIUu8jHbsmZUq6gp8Gozzj9SA=",
+        "owner": "aurora-silicon",
+        "repo": "u-boot",
+        "rev": "437a670138dfa351287390da318e2abe6314c634",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "u-boot",
+        "rev": "437a670138dfa351287390da318e2abe6314c634",
+        "type": "github"
+      }
+    },
+    "nixos-neo": {
+      "inputs": {
+        "aurora-installer": "aurora-installer",
+        "aurora-linux": "aurora-linux",
+        "aurora-linux-wifi": "aurora-linux-wifi",
+        "aurora-m1n1": "aurora-m1n1",
+        "aurora-uboot": "aurora-uboot",
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1791048838,
+        "narHash": "sha256-ts/RNfZ1VkKbKN/u8OMVl9S8m8bhw5KJlfQzNP7lNjU=",
+        "ref": "main",
+        "rev": "ede70e57ac63d970449565b93699a069cc7c1005",
+        "revCount": 5,
+        "type": "git",
+        "url": "ssh://git@github.com/niteria/nixos-neo"
+      },
+      "original": {
+        "ref": "main",
+        "type": "git",
+        "url": "ssh://git@github.com/niteria/nixos-neo"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1787001381,
+        "narHash": "sha256-Ue1Yo8gfHdD4TMtNewhA4tkSYeFqXThju0nCyJc3ALo=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ec2d622de0773551768cf98f3fc50cbcc003b9c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ec2d622de0773551768cf98f3fc50cbcc003b9c5",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixos-neo": "nixos-neo",
+        "nixpkgs": [
+          "nixos-neo",
+          "nixpkgs"
+        ]
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
