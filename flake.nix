@@ -18,6 +18,7 @@
         modules = [
           nixos-neo.nixosModules.macbookNeo
           nixos-neo.nixosModules.image
+          nixos-neo.nixosModules.firstLogin
           ./configuration.nix
         ];
       };

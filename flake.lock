@@ -92,11 +92,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1791054679,
-        "narHash": "sha256-RD6gZRj/8nU4O0E2k0NCs/loiKq/U+MJiqoc7kbHEuU=",
+        "lastModified": 1791068223,
+        "narHash": "sha256-zfbs5zjfW0flrZuXMDl5Eo7TiyhERT1M6mounVehuDI=",
         "ref": "main",
-        "rev": "e66d4d78b81b3e4cd47d35c69001a755fbbaedcf",
-        "revCount": 7,
+        "rev": "6a5eb2dbd1c753f5cef00842654576767a38984a",
+        "revCount": 8,
         "type": "git",
         "url": "ssh://git@github.com/niteria/nixos-neo"
       },

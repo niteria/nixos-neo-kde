@@ -39,38 +39,10 @@ in
       "networkmanager"
     ];
   };
-  # Generic installed-system onboarding: no shared password or operator key is
-  # embedded in the image. The console prompt finishes before the display manager.
-  systemd.services.neo-initial-password = {
-    description = "Set the initial Neo login password";
-    requiredBy = [ loginService ];
-    # The console getty must also wait while the first-password prompt owns tty1.
-    before = [
-      "getty@tty1.service"
-      "display-manager.service"
-    ];
-    after = [ "systemd-user-sessions.service" ];
-    unitConfig.ConditionPathExists = "!/var/lib/nixos-neo/account-ready";
-    serviceConfig = {
-      Type = "oneshot";
-      StandardInput = "tty-force";
-      StandardOutput = "tty";
-      StandardError = "tty";
-      TTYPath = "/dev/tty1";
-      TTYReset = true;
-    };
-    path = [
-      pkgs.shadow
-      pkgs.coreutils
-      pkgs.kbd
-    ];
-    script = ''
-      chvt 1
-      echo "Choose a password for the neo account. KDE login starts after this completes."
-      passwd neo
-      install -d -m 700 /var/lib/nixos-neo
-      touch /var/lib/nixos-neo/account-ready
-    '';
+  services.nixosNeoFirstLogin = {
+    enable = true;
+    user = "neo";
+    loginUnits = [ loginService ];
   };
 
   nix.settings = {
