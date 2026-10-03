@@ -48,6 +48,8 @@
         assert cfg.users.users.root.openssh.authorizedKeys.keys == [ ];
         assert cfg.users.users.neo.openssh.authorizedKeys.keys == [ ];
         assert cfg.security.sudo.wheelNeedsPassword;
+        assert builtins.elem "getty@tty1.service" cfg.systemd.services.neo-initial-password.before;
+        assert builtins.elem "display-manager.service" cfg.systemd.services.neo-initial-password.before;
         assert !console.services.displayManager.sddm.enable;
         assert console.systemd.defaultUnit == "multi-user.target";
         nixpkgs.legacyPackages.x86_64-linux.runCommand "nixos-neo-kde-composition" { } "touch $out";

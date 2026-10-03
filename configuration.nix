@@ -44,7 +44,11 @@ in
   systemd.services.neo-initial-password = {
     description = "Set the initial Neo login password";
     requiredBy = [ loginService ];
-    before = [ loginService ];
+    # The console getty must also wait while the first-password prompt owns tty1.
+    before = [
+      "getty@tty1.service"
+      "display-manager.service"
+    ];
     after = [ "systemd-user-sessions.service" ];
     unitConfig.ConditionPathExists = "!/var/lib/nixos-neo/account-ready";
     serviceConfig = {
