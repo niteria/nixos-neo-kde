@@ -63,9 +63,14 @@ That console-selected boot exposed MTP command timeouts and missing built-in
 keyboard registration; USB input recovered access. Returning to KDE restored
 Linux input, but its menu countdown was slow and built-in menu input failed with
 USB input working. The separate nscd startup restart-limit failure now has a
-resolver-update debounce fix verified by a two-guest VM reproducer; its physical
-cold-boot acceptance is pending.
+resolver-update debounce fix verified by a two-guest VM reproducer and by the
+physical generation-2 cold boot and ordinary reboot on October 4. Both boots
+had zero failed units; saved networking and persistence checks passed.
 See the support repository's `docs/INSTALLER-INTEGRATION.md` and `docs/TODO.md`.
+
+The guided installer menu also passed native macOS target discovery, small-root
+filtering and cancellation after correcting Apple's `Unknown` physical-kind
+reporting. The explicit physical-disk inventory identifies the internal SSD.
 
 The newer quiet-password setup passes protocol and real NixOS VM tests; its
 physical acceptance is deferred until the operator resumes hardware testing.
