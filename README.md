@@ -68,9 +68,17 @@ physical generation-2 cold boot and ordinary reboot on October 4. Both boots
 had zero failed units; saved networking and persistence checks passed.
 See the support repository's `docs/INSTALLER-INTEGRATION.md` and `docs/TODO.md`.
 
+The support pin includes the October 4 USB-menu correction: asynchronous xHCI
+interrupt polling with pending-request quiesce before Linux handoff. Physical
+mixed USB/built-in arrow and Enter tests, extra USB navigation, normal KDE,
+Ethernet/Wi-Fi and persistence checks passed. Its integrated U-Boot binary is
+byte-identical to the accepted hardware build. See the support repository's
+`docs/USB-KEYBOARD-POLLING.md`. The separate intermittent Linux MTP timeout
+remains under investigation.
+
 The guided installer menu also passed native macOS target discovery, small-root
 filtering and cancellation after correcting Apple's `Unknown` physical-kind
 reporting. The explicit physical-disk inventory identifies the internal SSD.
 
-The newer quiet-password setup passes protocol and real NixOS VM tests; its
-physical acceptance is deferred until the operator resumes hardware testing.
+The newer quiet-password setup passes protocol and real NixOS VM tests; physical
+fresh-password acceptance remains pending because existing accounts skip setup.
