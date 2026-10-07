@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "aurora-avd-firmware": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790034565,
+        "narHash": "sha256-kVVhLQbAJ+QeZ3b+8SSwszjUh3f14kYZWrHkcrd3co8=",
+        "owner": "aurora-silicon",
+        "repo": "avd-fw",
+        "rev": "9cbde5c7d993844bf086318974958b11076600a0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "avd-fw",
+        "rev": "9cbde5c7d993844bf086318974958b11076600a0",
+        "type": "github"
+      }
+    },
     "aurora-installer": {
       "flake": false,
       "locked": {
@@ -28,6 +45,23 @@
         "owner": "aurora-silicon",
         "repo": "linux",
         "rev": "b8404c7034c3af24fba4fa89273c1405b4947d47",
+        "type": "github"
+      }
+    },
+    "aurora-linux-gpu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791344212,
+        "narHash": "sha256-ZGtiMu7b+E31Rm1Q04TKYfe07t5E6qj+n/d6N/mrmuA=",
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "d9b7b82975e2dad4b9a5941ade2f4debadd61c6c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "d9b7b82975e2dad4b9a5941ade2f4debadd61c6c",
         "type": "github"
       }
     },
@@ -82,21 +116,41 @@
         "type": "github"
       }
     },
+    "avd-vaapi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789850938,
+        "narHash": "sha256-7AEijheNbaEjecQnRrAQ1MmQV23BFFLTsFMnaG1ji3Y=",
+        "owner": "iconidentify",
+        "repo": "libva-v4l2_request",
+        "rev": "5b5046cbda6892f4a63df0015857a80bd42c17cf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "iconidentify",
+        "repo": "libva-v4l2_request",
+        "rev": "5b5046cbda6892f4a63df0015857a80bd42c17cf",
+        "type": "github"
+      }
+    },
     "nixos-neo": {
       "inputs": {
+        "aurora-avd-firmware": "aurora-avd-firmware",
         "aurora-installer": "aurora-installer",
         "aurora-linux": "aurora-linux",
+        "aurora-linux-gpu": "aurora-linux-gpu",
         "aurora-linux-wifi": "aurora-linux-wifi",
         "aurora-m1n1": "aurora-m1n1",
         "aurora-uboot": "aurora-uboot",
+        "avd-vaapi": "avd-vaapi",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1791125172,
-        "narHash": "sha256-5fy7zoHygGkwpqT6nElDJNe5nvIZmwbmynblNuutGo0=",
+        "lastModified": 1791383943,
+        "narHash": "sha256-bodTPcpsiAgRg/NXSxNRj5ycMMQp2+fzFKXnKBvnIwQ=",
         "ref": "main",
-        "rev": "c2554ff0e4d311ee98e1713d929d197d57299281",
-        "revCount": 14,
+        "rev": "b8de957ce144dfd91bb8622eeb41b8cc6fed1a00",
+        "revCount": 16,
         "type": "git",
         "url": "ssh://git@github.com/niteria/nixos-neo"
       },

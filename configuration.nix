@@ -13,16 +13,34 @@ let
 in
 {
   system.stateVersion = "26.05";
+  system.nixos.tags = [ "gpu-prepared" ];
   networking.hostName = "nixos-neo";
   hardware.macbookNeo = {
     boot.backend = "systemd-boot";
+    gpu.mode = "prepare";
     wifi.enable = true;
+    bluetooth = {
+      enable = true;
+      automaticAdmission = true;
+    };
+    avd.enable = true;
+    ave = {
+      enable = true;
+      ffmpeg.enable = true;
+      healthUnits = [ "bluetooth.service" ];
+    };
     installer.name = "NixOS Neo KDE";
     installer.minimumRootBytes = 16 * 1024 * 1024 * 1024;
   };
 
   networking.networkmanager.enable = true;
   hardware.graphics.enable = true;
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 25;
+    priority = 100;
+  };
   services.xserver.enable = true;
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
@@ -37,6 +55,7 @@ in
     extraGroups = [
       "wheel"
       "networkmanager"
+      "video"
     ];
   };
   services.nixosNeoFirstLogin = {
@@ -55,6 +74,8 @@ in
   environment.systemPackages = [
     pkgs.firefox
     pkgs.git
+    pkgs.brave
+    pkgs.mpv
   ];
 
   specialisation.console.configuration = {
