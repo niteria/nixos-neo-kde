@@ -3,15 +3,17 @@
 A graphical consumer of `nixos-neo`: KDE Plasma 6, SDDM, NetworkManager,
 Firefox, Brave and mpv. The configuration selects the GPU-prepared kernel,
 automatic Wi-Fi/Bluetooth provisioning, hardware video decoding, native FFmpeg
-AVE encoders and 25% zstd zram. Hardware support, the matched built-in boot keyboard
-and EFI generation/specialisation menus come from `nixos-neo`.
+AVE encoders, protected speakers/headphones, built-in microphone capture and 25%
+zstd zram. Hardware support, the matched built-in boot keyboard and EFI
+generation/specialisation menus come from `nixos-neo`.
 
 GPU preparation retains the software-rendered desktop with Asahi loading blocked.
 Accelerated rendering requires the matching public Mesa AGX3 package.
 
 There are no personal SSH keys, network credentials, unit calibration files or
 partition UUIDs in this configuration. The installer discovers installation
-identities and collects the target Neo's original radio inputs locally in macOS.
+identities and collects the target Neo's original radio inputs and private AVE
+reference locally in macOS.
 
 ## Build
 
@@ -28,8 +30,8 @@ The support repository is currently private. Build access uses ordinary GitHub
 SSH authentication; no GitHub credential is needed to run the resulting installer.
 `flake.lock` pins the exact support revision.
 
-The October 7 prepared-stack update pins support
-[`b8de957`](https://github.com/niteria/nixos-neo/commit/b8de957ce144dfd91bb8622eeb41b8cc6fed1a00).
+The October 8 AVE/audio update pins support
+[`c7a9e1b`](https://github.com/niteria/nixos-neo/commit/c7a9e1bc304de106d218a8da6a2609ea69bd7699).
 To build the installed generation and boot bundle independently of the installer:
 
 ```sh
@@ -37,9 +39,10 @@ nix build .#system .#boot-bundle
 nix flake check
 ```
 
-The checks cover the parent/console kernel, FUSE/AVE contracts and closed GPU
-configuration, plus the exact KDE installer's integrity and file-backed write/
-readback with synthetic Wi-Fi/Bluetooth provisioning inputs.
+The checks cover the parent/console audio kernel, FUSE/AVE contracts, speaker
+guard/routing and closed GPU configuration, plus the exact KDE installer's
+integrity and file-backed write/readback with synthetic Wi-Fi/Bluetooth and AVE
+provisioning inputs.
 
 For support-library development before publishing a new revision:
 
@@ -73,14 +76,17 @@ build and file-backed tests; the existing Neo deployment is not changed by a bui
 ## Video setup
 
 AVD hardware decoding uses the support module's V4L2-request VA-API backend; see
-the pinned support repository's [AVD guide](https://github.com/niteria/nixos-neo/blob/b8de957ce144dfd91bb8622eeb41b8cc6fed1a00/docs/AVD.md)
+the pinned support repository's [AVD guide](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/AVD.md)
 for the qualified mpv command.
 
-AVE encoding needs a **one-time private reference** prepared from the owner's
-matching macOS installation and placed at `/var/lib/nixos-neo/ave-reference`.
-The installer provisions the radio inputs; this AVE reference is prepared
-separately as described in the [AVE setup guide](https://github.com/niteria/nixos-neo/blob/b8de957ce144dfd91bb8622eeb41b8cc6fed1a00/docs/AVE.md).
-The `neo` user has access through the `video` group. Once setup is complete:
+The installer prepares AVE's **one-time private reference** alongside radio inputs
+on the supported Mac17,5/macOS 26.6.2 build 25G83. It collects synthetic encoder
+sessions, independently decodes them, indexes the matching native code and caches
+the verified reference. The first-boot importer installs the bound private seed
+at `/var/lib/nixos-neo/ave-reference` before encoder use. Original code and captures
+remain local private data. Existing/custom installations also have a manual route
+in the [AVE setup guide](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/AVE.md).
+The `neo` user has access through the `video` group:
 
 ```sh
 ffmpeg -i input.mp4 -c:v h264_neo_ave -c:a copy output.mp4
@@ -92,7 +98,32 @@ reuse one firmware instance. Parameters and frames are supplied directly by
 FFmpeg, with no per-video preparation. The support guide records provenance,
 qualified formats and the current lifecycle limits.
 
+## Sound and microphones
+
+`hardware.macbookNeo.audio.enable` selects the matched audio kernel, UCM routing,
+PipeWire/WirePlumber profiles, J700 speaker DSP and speaker-protection daemon. Use
+the **MacBook Neo J700 Speakers** desktop sink or detected headphones for playback.
+The guard retains conservative gain while speaker-sense data is unavailable; the
+kernel also enforces a renewable volume lease.
+
+The standard built-in microphone is available through PipeWire. The high-quality
+48 kHz interface was qualified through direct ALSA; a separate desktop profile
+and default microphone gain/AGC tuning remain pending. Raw capture levels were low;
+the attended voice previews used measured normalization. See the
+[audio guide](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/AUDIO.md)
+for device names, source pins, protection details and exact test scope.
+
 ## Acceptance status
+
+The AVE/audio support checkpoint passed all 28 offline checks. The native AVE
+installer passed fresh/cached preparation; generation 15 automatically imported
+its new reference and reproduced both 120-frame 1080p encoder outputs. Generation
+16 then passed normal boot/platform checks, real speaker-interlock stop/lease
+tests, operator-confirmed left/right speaker/headphone playback and both visible,
+user-started microphone voice tests. The packaged audio kernel Image is identical
+to the tested kernel; guard/UCM/DSP packages are the exact qualified artifacts.
+The AVE module is bound to that Image, but encoding was last hardware-tested on
+generation 15 before the audio kernel change.
 
 The October 7 prepared stack passed a direct generation14 boot with matched
 PR171 kernel/FUSE/AVE, GPU/UAT handoff, identity/persistence/input checks,
@@ -100,7 +131,7 @@ automatic radios, KDE and NSS. Both 120-frame 1080p AVE encoders passed first-us
 socket activation and exact prior decoded-pixel comparison. The prepared kernel
 also passed nine AVD cases/300 exact frames. The limiter-aware NSS fix passed its
 three-guest regression and physical boot/network checks; all 23 support flake
-checks passed before publication. See the [GPU integration record](https://github.com/niteria/nixos-neo/blob/b8de957ce144dfd91bb8622eeb41b8cc6fed1a00/docs/GPU-INTEGRATION.md).
+checks passed before publication. See the [GPU integration record](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/GPU-INTEGRATION.md).
 New installer artifacts retain separate native macOS/installation acceptance;
 accelerated GPU rendering awaits matched Mesa AGX3.
 

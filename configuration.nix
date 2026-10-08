@@ -13,11 +13,15 @@ let
 in
 {
   system.stateVersion = "26.05";
-  system.nixos.tags = [ "gpu-prepared" ];
+  system.nixos.tags = [
+    "gpu-prepared"
+    "audio"
+  ];
   networking.hostName = "nixos-neo";
   hardware.macbookNeo = {
     boot.backend = "systemd-boot";
     gpu.mode = "prepare";
+    audio.enable = true;
     wifi.enable = true;
     bluetooth = {
       enable = true;

@@ -46,6 +46,9 @@
         assert cfg.hardware.macbookNeo.wifi.enable;
         assert cfg.hardware.macbookNeo.boot.backend == "systemd-boot";
         assert hardware.gpu.mode == "prepare";
+        assert hardware.audio.enable && kernel.neoAudio.speakerInterlock;
+        assert kernel.neoAudio.sourceRevision == nixos-neo.inputs.aurora-linux-gpu.rev;
+        assert kernel.modDirVersion == "7.1.12-neo-gpu-audio";
         assert kernel.src.rev == nixos-neo.inputs.aurora-linux-gpu.rev;
         assert hardware.packages.fuse-module.kernel.outPath == kernel.outPath;
         assert cfg.system.build.neoAveModule.kernelSourceRevision == kernel.src.rev;
@@ -54,6 +57,15 @@
         assert cfg.environment.sessionVariables.GALLIUM_DRIVER == "llvmpipe";
         assert hardware.bluetooth.enable && hardware.bluetooth.automaticAdmission;
         assert hardware.avd.enable && hardware.ave.enable && hardware.ave.ffmpeg.enable;
+        assert cfg.services.pipewire.enable && cfg.services.pipewire.wireplumber.enable;
+        assert builtins.elem hardware.audio.guardPackage cfg.services.udev.packages;
+        assert
+          cfg.systemd.services.speakerguardd.serviceConfig.ExecStart
+          == "${hardware.audio.guardPackage}/bin/speakerguardd -C AppleJ700 -c ${hardware.audio.guardPackage}/share/speakerguardd";
+        assert
+          cfg.systemd.user.services.wireplumber.environment.ALSA_CONFIG_UCM2
+          == "${hardware.audio.ucmPackage}/share/alsa/ucm2";
+        assert builtins.elem "nixos-neo-ave-provision.service" cfg.systemd.services.neo-ave.requires;
         assert builtins.elem "video" cfg.users.users.neo.extraGroups;
         assert cfg.services.nscd.debounceResolvconf;
         assert cfg.zramSwap.enable && cfg.zramSwap.memoryPercent == 25;
@@ -69,6 +81,8 @@
         assert !console.services.displayManager.sddm.enable;
         assert console.systemd.defaultUnit == "multi-user.target";
         assert console.hardware.macbookNeo.gpu.mode == "prepare";
+        assert console.hardware.macbookNeo.audio.enable;
+        assert console.boot.kernelPackages.kernel.outPath == kernel.outPath;
         assert console.system.build.neoAveDeviceTree.outPath == cfg.system.build.neoAveDeviceTree.outPath;
         nixpkgs.legacyPackages.x86_64-linux.runCommand "nixos-neo-kde-composition" { } "touch $out";
       checks.x86_64-linux.portable-bundle =
