@@ -1,14 +1,18 @@
 # NixOS Neo KDE
 
 A graphical consumer of `nixos-neo`: KDE Plasma 6, SDDM, NetworkManager,
-Firefox, Brave and mpv. The configuration selects the GPU-prepared kernel,
+Firefox, Brave and mpv. The configuration selects the matched Aurora-WIP native
+display and **AGX3 GPU stack: Zink OpenGL and Honeykrisp Vulkan**,
 automatic Wi-Fi/Bluetooth provisioning, hardware video decoding, native FFmpeg
 AVE encoders, protected speakers/headphones, built-in microphone capture and 25%
 zstd zram. Hardware support, the matched built-in boot keyboard and EFI
 generation/specialisation menus come from `nixos-neo`.
 
-GPU preparation retains the software-rendered desktop with Asahi loading blocked.
-Accelerated rendering requires the matching public Mesa AGX3 package.
+The kernel and Mesa are selected together with source/UAPI/USC/HAL checks.
+The EFI menu provides an accelerated **console** specialisation and a
+same-kernel/DTB **software** desktop fallback using llvmpipe with Asahi blocked.
+Suspend remains disabled by default while the observed extended-sleep restart
+is investigated.
 
 There are no personal SSH keys, network credentials, unit calibration files or
 partition UUIDs in this configuration. The installer discovers installation
@@ -30,8 +34,11 @@ The support repository is currently private. Build access uses ordinary GitHub
 SSH authentication; no GitHub credential is needed to run the resulting installer.
 `flake.lock` pins the exact support revision.
 
-The October 8 AVE/audio update pins support
-[`c7a9e1b`](https://github.com/niteria/nixos-neo/commit/c7a9e1bc304de106d218a8da6a2609ea69bd7699).
+The October12 GPU upgrade pins support
+[`327121a`](https://github.com/niteria/nixos-neo/commit/327121a61916baea93a8bf432a339f6f05fec500)
+in `flake.lock`,
+with Linux `3b2bd35a8591bcad766c60d0681e7f060cfd8cc7` and Mesa
+`c12cdb32f7d052f9c1ddce2ac4b0049b92e2f3f1`.
 To build the installed generation and boot bundle independently of the installer:
 
 ```sh
@@ -39,8 +46,9 @@ nix build .#system .#boot-bundle
 nix flake check
 ```
 
-The checks cover the parent/console audio kernel, FUSE/AVE contracts, speaker
-guard/routing and closed GPU configuration, plus the exact KDE installer's
+The checks cover parent/console/software kernel and DTB consistency, FUSE/AVE
+contracts, explicit Zink selection, the llvmpipe fallback, disabled sleep and
+speaker guard/routing, plus the exact KDE installer's
 integrity and file-backed write/readback with synthetic Wi-Fi/Bluetooth and AVE
 provisioning inputs.
 
@@ -68,15 +76,18 @@ Bluetooth is admitted automatically after the matching private bundle is importe
 The KDE configuration requires at least a 16 GiB root; a larger allocation leaves
 more room for applications and retained generations.
 
-The EFI menu includes each retained generation and a **console** specialisation.
-Graphics use the support module's software-rendering fallback. Physical KDE
+The EFI menu includes each retained generation and its **console** and **software**
+specialisations. The normal desktop uses the matched accelerated Mesa package;
+the software fallback retains the same native display driver and shared DTB.
+Changing the display backend requires the corresponding full boot-state update
+or rollback. Physical KDE
 acceptance and new native installer acceptance are recorded separately from
 build and file-backed tests; the existing Neo deployment is not changed by a build.
 
 ## Video setup
 
 AVD hardware decoding uses the support module's V4L2-request VA-API backend; see
-the pinned support repository's [AVD guide](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/AVD.md)
+the pinned support repository's [AVD guide](https://github.com/niteria/nixos-neo/blob/327121a61916baea93a8bf432a339f6f05fec500/docs/AVD.md)
 for the qualified mpv command.
 
 The installer prepares AVE's **one-time private reference** alongside radio inputs
@@ -85,7 +96,7 @@ sessions, independently decodes them, indexes the matching native code and cache
 the verified reference. The first-boot importer installs the bound private seed
 at `/var/lib/nixos-neo/ave-reference` before encoder use. Original code and captures
 remain local private data. Existing/custom installations also have a manual route
-in the [AVE setup guide](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/AVE.md).
+in the [AVE setup guide](https://github.com/niteria/nixos-neo/blob/327121a61916baea93a8bf432a339f6f05fec500/docs/AVE.md).
 The `neo` user has access through the `video` group:
 
 ```sh
@@ -110,12 +121,35 @@ The standard built-in microphone is available through PipeWire. The high-quality
 48 kHz interface was qualified through direct ALSA; a separate desktop profile
 and default microphone gain/AGC tuning remain pending. Raw capture levels were low;
 the attended voice previews used measured normalization. See the
-[audio guide](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/AUDIO.md)
+[audio guide](https://github.com/niteria/nixos-neo/blob/327121a61916baea93a8bf432a339f6f05fec500/docs/AUDIO.md)
 for device names, source pins, protection details and exact test scope.
 
 ## Acceptance status
 
-The AVE/audio support checkpoint passed all 28 offline checks. The native AVE
+### October11–12 GPU and power work
+
+The matched support stack passed native Asahi and explicit Zink/Honeykrisp
+1,024-pixel rendering checks. KWin6.7.4 used Zink/Vulkan1.4 on the2408×1506 internal
+panel, and the operator confirmed desktop redraw, three brightness levels and
+five display-off/on cycles. Wi-Fi-only management survived Ethernet removal and
+reboot. The upgrade includes the GPU crash-log mapping correction, upstream DART
+changes, Wi-Fi-first modular Bluetooth admission, and the existing AVE Rust/frame-
+feedback and protected-audio work.
+
+Two reliability items remain open: an intermittent display-DART startup timeout
+and an unrequested restart after roughly37minutes of experimental idle sleep.
+The support library's explicit s2idle option passed short console/KDE wake tests
+and the bound-AVE kernel sleep veto, but these do not qualify everyday suspend.
+**This consumer keeps suspend disabled.** Hibernation and kexec also remain disabled.
+The GPU/desktop results are bounded hardware checks, not a performance claim or
+new media-codec/physical-installer acceptance.
+The pinned [GPU qualification record](https://github.com/niteria/nixos-neo/blob/327121a61916baea93a8bf432a339f6f05fec500/docs/GPU-INTEGRATION.md)
+and [power experiment](https://github.com/niteria/nixos-neo/blob/327121a61916baea93a8bf432a339f6f05fec500/docs/POWER.md)
+describe the exact scope. All41 support-library release checks passed before this pin.
+
+### Earlier AVE/audio and installer checkpoints
+
+The October8 AVE/audio support checkpoint passed all28 offline checks. The native AVE
 installer passed fresh/cached preparation; generation 15 automatically imported
 its new reference and reproduced both 120-frame 1080p encoder outputs. Generation
 16 then passed normal boot/platform checks, real speaker-interlock stop/lease
@@ -132,8 +166,8 @@ socket activation and exact prior decoded-pixel comparison. The prepared kernel
 also passed nine AVD cases/300 exact frames. The limiter-aware NSS fix passed its
 three-guest regression and physical boot/network checks; all 23 support flake
 checks passed before publication. See the [GPU integration record](https://github.com/niteria/nixos-neo/blob/c7a9e1bc304de106d218a8da6a2609ea69bd7699/docs/GPU-INTEGRATION.md).
-New installer artifacts retain separate native macOS/installation acceptance;
-accelerated GPU rendering awaits matched Mesa AGX3.
+New installer artifacts retain separate native macOS/installation acceptance.
+That older checkpoint predated the accelerated GPU results above.
 
 The October 3 release at consumer `1a4e9ee` / support `e66d4d7` passed native macOS
 existing-stub reinstallation, first-boot private firmware import, local password

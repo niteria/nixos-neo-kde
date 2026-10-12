@@ -82,6 +82,23 @@
         "type": "github"
       }
     },
+    "aurora-linux-wip": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791710650,
+        "narHash": "sha256-PSw0pvqhA5T+X2Pp8BuYqo0Je6cQm8375HIvf54Vni4=",
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "3b2bd35a8591bcad766c60d0681e7f060cfd8cc7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "linux",
+        "rev": "3b2bd35a8591bcad766c60d0681e7f060cfd8cc7",
+        "type": "github"
+      }
+    },
     "aurora-m1n1": {
       "flake": false,
       "locked": {
@@ -96,6 +113,23 @@
         "owner": "aurora-silicon",
         "repo": "m1n1",
         "rev": "0a33275c3c95a9ba18eca085c59951af9fedfcc7",
+        "type": "github"
+      }
+    },
+    "aurora-mesa-agx3": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791711798,
+        "narHash": "sha256-/rhymnCF0CwJGm5MfrBmY5ksxK+zz/AJ//D1mPMW79Q=",
+        "owner": "aurora-silicon",
+        "repo": "mesa",
+        "rev": "c12cdb32f7d052f9c1ddce2ac4b0049b92e2f3f1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aurora-silicon",
+        "repo": "mesa",
+        "rev": "c12cdb32f7d052f9c1ddce2ac4b0049b92e2f3f1",
         "type": "github"
       }
     },
@@ -140,17 +174,19 @@
         "aurora-linux": "aurora-linux",
         "aurora-linux-gpu": "aurora-linux-gpu",
         "aurora-linux-wifi": "aurora-linux-wifi",
+        "aurora-linux-wip": "aurora-linux-wip",
         "aurora-m1n1": "aurora-m1n1",
+        "aurora-mesa-agx3": "aurora-mesa-agx3",
         "aurora-uboot": "aurora-uboot",
         "avd-vaapi": "avd-vaapi",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1791413070,
-        "narHash": "sha256-fzmuQTCBtIj4lY8GUBiZtbErf+rLVEPGZ45bmHDi8E4=",
+        "lastModified": 1791786844,
+        "narHash": "sha256-5ehVRgFR3UlSe0qxg6Faq5GwWPrn1KxgXJJqUB3WI0Y=",
         "ref": "main",
-        "rev": "c7a9e1bc304de106d218a8da6a2609ea69bd7699",
-        "revCount": 17,
+        "rev": "327121a61916baea93a8bf432a339f6f05fec500",
+        "revCount": 22,
         "type": "git",
         "url": "ssh://git@github.com/niteria/nixos-neo"
       },

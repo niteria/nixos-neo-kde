@@ -14,13 +14,21 @@ in
 {
   system.stateVersion = "26.05";
   system.nixos.tags = [
-    "gpu-prepared"
+    "aurora-wip"
     "audio"
+    "gpu-agx3"
   ];
   networking.hostName = "nixos-neo";
   hardware.macbookNeo = {
     boot.backend = "systemd-boot";
-    gpu.mode = "prepare";
+    platform = "aurora-wip";
+    display.mode = "native";
+    gpu = {
+      mode = "enabled";
+      package = config.hardware.macbookNeo.packages.mesa-agx3;
+    };
+    # Short wake tests passed, but extended-sleep/reset reliability remains open.
+    power.suspend = "disabled";
     audio.enable = true;
     wifi.enable = true;
     bluetooth = {
@@ -80,6 +88,9 @@ in
     pkgs.git
     pkgs.brave
     pkgs.mpv
+    pkgs.vulkan-tools
+    pkgs.mesa-demos
+    config.hardware.macbookNeo.packages.gpu-render-smoke
   ];
 
   specialisation.console.configuration = {
@@ -88,5 +99,9 @@ in
     services.desktopManager.plasma6.enable = lib.mkForce false;
     systemd.defaultUnit = lib.mkForce "multi-user.target";
     system.nixos.tags = [ "console" ];
+  };
+  specialisation.software.configuration = {
+    hardware.macbookNeo.gpu.mode = lib.mkForce "prepare";
+    system.nixos.tags = [ "software" ];
   };
 }
